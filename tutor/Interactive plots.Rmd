@@ -4,7 +4,7 @@ author: 'Por: Eduardo Q Marques'
 date: "Abril de 2020"
 output: 
   html_document:
-    theme: darkly
+    theme: readable
 ---
 
 ```{r setup, include=FALSE}
