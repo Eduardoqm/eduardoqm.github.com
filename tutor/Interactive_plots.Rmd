@@ -75,6 +75,10 @@ ggplotly(gg)
 
 Faça bom uso dessa informação!
 
+-------------------------------------------------------------------------------------------
+
+[![Foo](img/rsolved2.png)](http://rsolved.tk/) Acesse qui nossa ferramenta de pesquisa.
+
 
 
 
@@ -138,3 +142,7 @@ ggplotly(gg)
 Of course, there are many more functions and possibilities using the plotly package. To learn more read the package documentation and visit the plotly website (https://plotly.com/).
 
 Make good use of this information!
+
+-------------------------------------------------------------------------------------------
+
+[! [Foo] (img / rsolved2.png)] (http://rsolved.tk/) Access our research tool here.
