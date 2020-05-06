@@ -1,0 +1,146 @@
+---
+title: "3D Charts in R"
+author: 'Por: Eduardo Q Marques'
+date: "Abril de 2020"
+output: 
+  html_document:
+    theme: readable
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(plotly)
+library(gapminder)
+library(rayshader)
+```
+#  {.tabset .tabset-fade .tabset-pills}
+
+##Português
+
+Olá galera!
+
+É realmente incrivel o que se pode fazer dentro do ambiente R e um dos principais desejos de quem trabalha com o R é fazer gráficos bonitos. Falo por mim!
+Para isso o ggplot2 é um pacote essencial para quem gosta de fazer gráficos bonitos. Mas sabia que da para fazer mais? Sim! Da para criar um gráfico interativo com qualquer gráfico do ggplot utilizando o pacote plotly.
+Quer aprender fazer?
+Então vem comigo!
+
+### Carregando os pacotes e o dataframe
+Primeiro vamos iniciar carregando os pacotes necessários. Iremos usar o pacote gapminder para obter um banco de dados para nossa aula.
+
+```{r pacotes}
+library(ggplot2)
+library(plotly)
+library(gapminder)
+library(rayshader)
+```
+
+Agora vamos criar nosso dataframe e visualizar.
+
+```{r dados}
+df <- gapminder
+df
+```
+
+Esses dados do Gapminder são sobre expectativa de vida, PIB per capita e população por país, compreendendo varios anos.
+Para facilitar nossa vizualização no gráfico vamos filtrar apenas o ano de 1992.
+
+```{r filtro}
+df = df%>%
+  filter(year==1992)
+df
+```
+
+### Plotando os dados
+Agora nosso dado está pronto para ser plotado. Vamos criar um gráfico de pontos bem bonito no ggplot usando os dados do PIB per capita, expectativa de vida, população e continente.
+
+```{r ggplot2}
+ggplot(df, aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+```
+
+### Interactive Charts
+Ok...o gráfico ficou bonito, mas e dai? Como deixar ele interativo?
+
+Essa é a parte mais fácil de todas! Simplismente iremos colocar o gráfico que criamos dentro de um objeto e carregaremos usando a função ggplotly.
+
+```{r interativo}
+plot_ly(x = df$gdpPercap, y = df$lifeExp, z = df$pop, color = df$continent, size = I(30))
+```
+
+É claro que existem muito mais funções e possibilidades usando o pacote plotly. Para saber mais leia a documentação do pacote e acesse o site do plotly (https://plotly.com/).
+
+Faça bom uso dessa informação!
+
+-------------------------------------------------------------------------------------------
+
+[![Foo](img/rsolved2.png)](http://rsolved.tk/) Acesse qui nossa ferramenta de pesquisa.
+
+
+
+
+## English
+
+Hi guys!
+
+It's really amazing what you can do within the R environment and one of the main desires of those who work with R is to make beautiful graphics.
+I speak for myself!
+For that, ggplot2 is an essential package for those who like to make beautiful graphics. But did you know that you can do more? Yes! You can create an interactive chart with any ggplot chart using the plotly package.
+Want to learn how to do?
+Then come with me!
+
+### Load packages and data frame
+First, let's start loading the necessary packages. We will use the gapminder package to obtain a database for our class.
+
+```{r packges}
+library(ggplot2)
+library(plotly)
+library(gapminder)
+```
+
+Now let's create our dataframe and visualize it.
+
+```{r dataframe}
+df <- gapminder
+df
+```
+
+These Gapminder data are about life expectancy, GDP per capita and population by country, comprising several years.
+To facilitate our visualization in the graph, we will filter only the year 1992.
+
+```{r filter}
+df = df%>%
+  filter(year==1992)
+df
+```
+
+### Plotting the data
+Now our data is ready to be plotted. Let's create a beautiful dot plot in ggplot using data from GDP per capita, life expectancy, population and continent.
+
+```{r ggplot}
+ggplot(df, aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+```
+
+### Interactive Charts
+Ok ... the graph was beautiful, but so what? How to make it interactive?
+
+This is the easiest part of all! We will simply put the graph we created inside an object and load it using the ggplotly function.
+
+```{r interactive}
+gg = ggplot(df, aes(gdpPercap, lifeExp, size = pop, color=continent)) +
+  geom_point() +
+  theme_bw()
+
+ggplotly(gg)
+```
+
+Of course, there are many more functions and possibilities using the plotly package. To learn more read the package documentation and visit the plotly website (https://plotly.com/).
+
+Make good use of this information!
+
+-------------------------------------------------------------------------------------------
+
+[![Foo](img/rsolved2.png)](http://rsolved.tk/) Access our research tool here.
