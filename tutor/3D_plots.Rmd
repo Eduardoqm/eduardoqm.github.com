@@ -130,11 +130,7 @@ Ok ... the graph was beautiful, but so what? How to make it interactive?
 This is the easiest part of all! We will simply put the graph we created inside an object and load it using the ggplotly function.
 
 ```{r interactive}
-gg = ggplot(df, aes(gdpPercap, lifeExp, size = pop, color=continent)) +
-  geom_point() +
-  theme_bw()
-
-ggplotly(gg)
+plot_ly(x = df$gdpPercap, y = df$lifeExp, z = df$pop, color = df$continent, size = I(30))
 ```
 
 Of course, there are many more functions and possibilities using the plotly package. To learn more read the package documentation and visit the plotly website (https://plotly.com/).
