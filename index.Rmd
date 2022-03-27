@@ -1,0 +1,33 @@
+---
+title:
+output: html_document
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 85% !important;
+  margin: auto;
+}
+</style>
+
+<br>
+
+<div class="pull-left" style="margin:2em" markdown="1">
+![](Eu.jpeg) 
+</div>
+
+#Eduardo Q Marques
+
+#### I'm a biologist, PhD candidate in Ecology at the University of Mato Grosso State . My research explores data from multispectral and hyperspectral satellite sensors as tools for mapping and monitoring forest degradation caused by water stress, fires and windstorms amplified by climate change.
+
+#### My research combines field experiments, remote sensing, statistical models and a lot of data processing and R code.
+
+<br>
+
+#### More of me:
+<div class="pull-center" style="margin:2em" markdown="1">
+[![Foo](rg.jpg)](https://www.researchgate.net/profile/Eduardo-Queiroz-Marques)
+[![Foo](github.jpg)](https://github.com/Eduardoqm)
+[![Foo](twitter.png)](https://twitter.com/EQMarques)
+[![Foo](rsolved.png)](https://eduardoqm.github.io/rsolved/home)
+</div>
