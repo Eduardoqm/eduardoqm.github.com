@@ -13,7 +13,7 @@ output: html_document
 <br>
 
 <div class="pull-left" style="margin:2em" markdown="1">
-![](Eu.jpeg) 
+![](Eu.jpg) 
 </div>
 
 #Eduardo Q Marques
