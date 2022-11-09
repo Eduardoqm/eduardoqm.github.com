@@ -26,8 +26,8 @@ output: html_document
 
 #### More of me:
 <div class="pull-center" style="margin:2em" markdown="1">
+[![Foo](curriculum.png)](https://eduardoqm.github.io/cv/CV_Eduardo Q Marques.pdf)
 [![Foo](rg.jpg)](https://www.researchgate.net/profile/Eduardo-Queiroz-Marques)
 [![Foo](github.jpg)](https://github.com/Eduardoqm)
 [![Foo](twitter.png)](https://twitter.com/EQMarques)
-[![Foo](rsolved.png)](https://eduardoqm.github.io/rsolved/home)
 </div>
