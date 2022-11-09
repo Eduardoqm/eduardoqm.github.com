@@ -16,7 +16,7 @@ output: html_document
 ![](Eu.jpg) 
 </div>
 
-#Eduardo Q Marques
+## Eduardo Q Marques
 
 #### I'm a biologist, PhD candidate in Ecology at the University of Mato Grosso State . My research explores data from multispectral and hyperspectral satellite sensors as tools for mapping and monitoring forest degradation caused by water stress, fires and windstorms amplified by climate change.
 
