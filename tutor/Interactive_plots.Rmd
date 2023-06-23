@@ -145,4 +145,4 @@ Make good use of this information!
 
 -------------------------------------------------------------------------------------------
 
-[![Foo](img/rsolved2.png)](http://rsolved.tk/) Access our research tool here.
+[![Foo](img/rsolved2.png)](https://eduardoqm.github.io/rsolved/home/) Access our research tool here.
