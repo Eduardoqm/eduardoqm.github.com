@@ -50,7 +50,7 @@ bank2$grp = c("a")
 
 gg1 = ggplot(bank2, aes(x=Date, y = bank))+
   geom_line(aes(group = grp),size = 1)+
-  geom_point(size = 4)+
+  geom_point(size = 2)+
   theme_minimal()+
   labs(y = NULL, x = NULL, title ="Total Money in bank")+
    #annotate(geom="text", x=bank2$Date[length(bank2$Date)-1],
@@ -92,7 +92,7 @@ gg3 = ggplot(df, aes(x=Date, y = all, col = "darkred"))+
 ggplotly(gg3)
 
 #-------------------------------------------------------------------------------
-#Pizza percentage graph
+#Percentage graph
 perc = df[,c(4:7)]
 
 perc$Real_bank = perc$bank
@@ -125,12 +125,15 @@ ggplot(perc2, aes(x=value, y=variable, fill = variable))+
 
 ## Money in material speculations
 ```{r stuff, echo=FALSE}
-ggplot(df, aes(x=Date, y=Valued_stuff))+
-  geom_col(fill = "blue", alpha = 0.55)+
+bar = ggplot(df, aes(x=Date, y=Valued_stuff))+
+  #geom_col(fill = "blue", alpha = 0.55)+
+  geom_area(fill = "blue", alpha = 0.55)+
   theme_bw()+
   ggtitle("Valued Stuff")+
   theme(plot.title = element_text(hjust = 0.5), 
         axis.text.x = element_text(angle = 90))
+
+ggplotly(bar)
 ```
 
 ## Gain and loss balance
@@ -143,11 +146,11 @@ strg$balance_str_date = strg$bank - strg$bank[1]
 strg2 = df
 strg2$balance_str_date = strg2$all - strg2$all[1]
 
-ggplot(strg, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date))))+
+ba1 = ggplot(strg, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date))))+
   geom_col()+
   theme_minimal()+
   ggtitle("Gain in relation of initial money in bank")+
-  labs(y = "Difference in relation initial money (Reais)", x = NULL)+
+  labs(y = "Difference in relation initial bank money (Reais)", x = NULL)+
   geom_text(aes(label = round(balance_str_date, 0),
                 hjust = 0.5,
                 vjust = ifelse(balance_str_date < 0, 1.5, -1)), size = 2.5) +
@@ -156,10 +159,10 @@ ggplot(strg, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date
   theme(plot.title = element_text(hjust = 0.5), 
         axis.text.x = element_text(angle = 90), legend.position = "none")
 
-ggplot(strg2, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date))))+
+ba2 = ggplot(strg2, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date))))+
   geom_col()+
-  geom_line(aes(group = grp), size = 1, alpha = 0.7)+
-  geom_point(size = 1)+
+  #geom_line(aes(group = grp), size = 1, alpha = 0.7)+
+  #geom_point(size = 1)+
   theme_minimal()+
   ggtitle("Gain in relation of initial money total")+
   labs(y = "Difference in relation initial money (Reais)", x = NULL)+
@@ -182,7 +185,7 @@ for (x in 1:zet) {
   
 }
 
-ggplot(bank_bal, aes(x=Date, y = bal, fill=factor(sign(bal))))+
+ba3 = ggplot(bank_bal, aes(x=Date, y = bal, fill=factor(sign(bal))))+
   geom_col()+
   theme_minimal()+
   ggtitle("Monthly Gain and Loss Balance (Money in Bank)")+
@@ -208,7 +211,7 @@ for (x in 1:zet) {
   
 }
 
-ggplot(bank_bal2, aes(x=Date, y = bal, fill=factor(sign(bal))))+
+ba4 = ggplot(bank_bal2, aes(x=Date, y = bal, fill=factor(sign(bal))))+
   geom_col()+
   theme_minimal()+
   ggtitle("Monthly Gain and Loss Balance (Total Money)")+
@@ -220,4 +223,9 @@ ggplot(bank_bal2, aes(x=Date, y = bal, fill=factor(sign(bal))))+
   scale_fill_manual(values=c("red","blue","darkgreen"))+
   theme(plot.title = element_text(hjust = 0.5), 
         axis.text.x = element_text(angle = 90), legend.position = "none")
+
+ggplotly(ba1)
+ggplotly(ba2)
+ggplotly(ba3)
+ggplotly(ba4)
 ```
