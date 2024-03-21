@@ -14,9 +14,11 @@ body {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(ggplot2)
+
 library(reshape2)
 library(tidyverse)
+library(scales)
+library(ggplot2)
 library(plotly)
 
 #df = read.csv(file.choose())
@@ -29,6 +31,7 @@ df$Brazil_Bank = as.numeric(df$Brazil_Bank)
 df$Valued_stuff = as.numeric(df$Valued_stuff)
 df$bank = as.numeric(df$bank)
 df$all = as.numeric(df$all)
+df$Date = as.Date(df$Date, "%m/%d/%Y")
 
 
 #Money by bank ====================================================================================
@@ -99,11 +102,11 @@ perc2 = perc
 perc2$Real_bank = signif((perc$Real_bank/perc$total)*100, digits = 2)
 perc2$Valued_stuff = signif((perc$Valued_stuff/perc$total)*100, digits = 2)
 
-perc2 = perc2[,c(1,4,5)]
+perc2 = perc2[,c(1,5,4)]
 perc2 = tail(perc2, n =1)
-perc2 = melt(perc2)
+perc2 = melt(perc2, id = "Date")
 
-perc = perc[,c(1,4,5)]
+perc = perc[,c(1,5)]
 perc = tail(perc, n =1)
 perc = melt(perc)
 perc$value = signif(perc$value, digits = 2)/1000
