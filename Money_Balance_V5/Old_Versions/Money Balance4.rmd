@@ -1,0 +1,248 @@
+---
+title: "**Financial Statement**"
+author: 'Created by: EQMarques'
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{css, echo=FALSE}
+body {
+ background-color: white;
+    color: darkblue;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(reshape2)
+library(tidyverse)
+library(plotly)
+
+#df = read.csv(file.choose())
+df = read.csv("Money_balance.csv", sep = ",")
+df$grp = c("a")
+
+df$NU_Bank = as.numeric(df$NU_Bank)
+df$Mercado_Pago = as.numeric(df$Mercado_Pago)
+df$Brazil_Bank = as.numeric(df$Brazil_Bank)
+df$Dollar_bank = as.numeric(df$Dollar_bank)
+df$Euro_bank = as.numeric(df$Euro_bank)
+df$Valued_stuff = as.numeric(df$Valued_stuff)
+df$Dollar = as.numeric(df$Dollar)
+df$Euro = as.numeric(df$Euro)
+
+
+#Money by bank ====================================================================================
+bank = df[,c(1,2,3,4,5,7,8,9)]
+bank$Wise_Dollar = (bank$Dollar_bank*df$Dollar)
+bank$Wise_Euro = (bank$Euro_bank*df$Euro)
+
+bank = bank[,c(-4,-5,-6,-7)]
+
+bank = melt(bank, id = "Date")
+
+colnames(bank) = c("Date","Bank","Value")
+
+bank_pal = c("purple","blue","yellow","darkgreen","RoyalBlue")
+```
+## Money in Bank and Investment Brokerage 
+```{r bank, echo=FALSE}
+bank2 = bank %>%
+  group_by(Date) %>%
+  summarise(Value = sum(Value))
+bank2$grp = c("a")
+
+gg1 = ggplot(bank2, aes(x=Date, y = Value))+
+  geom_line(aes(group = grp),size = 2)+
+  geom_point(size = 2)+
+  theme_minimal()+
+  labs(y = NULL, x = NULL, title ="Total Money in bank")+
+   #annotate(geom="text", x=bank2$Date[length(bank2$Date)-1],
+    #                                   y=max(bank2$Value)+1000,
+    #        label= round(bank2$Value[length(bank2$Value)], 0),
+    #          color = "darkblue", size = 5)+
+  ylim(min(bank2$Value), max(bank2$Value)+2000)+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90))+
+  scale_color_manual(values=bank_pal)
+
+ggplotly(gg1)
+
+#--------------------------------------------------------------------------------------
+gg2 = ggplot(bank, aes(x=Date, y = Value, col = Bank))+
+  geom_line(aes(group = Bank), size = 2, alpha = 0.5)+
+  geom_point(size = 2)+
+  #facet_grid(rows = vars(Bank), scales = "free")+
+  theme_bw()+
+  labs(y = NULL, x = NULL, title ="Money by Bank")+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90), legend.position = "none")+
+  scale_color_manual(values=bank_pal)
+
+ggplotly(gg2)
+```
+
+## Total Money in bank and other goods with values
+```{r Total, echo=FALSE}
+df$Total_Reais = (df$NU_Bank+df$Mercado_Pago+df$Brazil_Bank+df$Valued_stuff+(df$Euro_bank*df$Euro)+(df$Dollar_bank*df$Dollar))
+df$Total_Dollar = (df$Total_Reais/df$Dollar)
+df$Total_Euro = (df$Total_Reais/df$Euro)
+
+
+dfy = df[,c(12,13,14,9)]
+dfy = melt(dfy)
+
+#-------------------------------------------------------------------------------
+money_pal = c("darkred","darkgreen","RoyalBlue")
+
+gg3 = ggplot(dfy, aes(x=Date, y = value, col = variable))+
+  geom_line(aes(group = variable), size = 2, alpha = 0.5)+
+  geom_point(size = 2)+
+  facet_grid(rows = vars(variable), scales = "free")+
+  theme_bw()+
+  labs(y = NULL, x = NULL, title = "Total Money in diferent corrency (Real-Dollar-Euro)")+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90), legend.position = "none")+
+  scale_color_manual(values=money_pal)
+
+ggplotly(gg3)
+
+#-------------------------------------------------------------------------------
+#Pizza percentage graph
+perc = df[,c(1:9)]
+
+#Convert not Real money
+perc$Dollar_bank = perc$Dollar_bank*perc$Dollar
+perc$Euro_bank = perc$Euro_bank*perc$Euro
+#Sum Money in Real conrrency
+perc$Real_bank = perc$NU_Bank+perc$Mercado_Pago+perc$Brazil_Bank
+perc = perc[,c(10,4,5,6,9)]
+#Total money and percentage calculation
+perc$total = perc$Real_bank+perc$Dollar_bank+perc$Euro_bank+perc$Valued_stuff
+
+perc2 = perc
+perc2$Real_bank = signif((perc$Real_bank/perc$total)*100, digits = 2)
+perc2$Dollar_bank = signif((perc$Dollar_bank/perc$total)*100, digits = 2)
+perc2$Euro_bank = signif((perc$Euro_bank/perc$total)*100, digits = 2)
+perc2$Valued_stuff = signif((perc$Valued_stuff/perc$total)*100, digits = 2)
+
+perc2 = perc2[,c(1:4)]
+perc2 = tail(perc2, n =1)
+perc2 = melt(perc2)
+
+perc = perc[,c(1:4)]
+perc = tail(perc, n =1)
+perc = melt(perc)
+perc$value = signif(perc$value, digits = 2)/1000
+
+
+ggplot(perc2, aes(x=value, y=variable, fill = variable))+
+  geom_col()+
+  geom_text(aes(x = value, label = paste0(value, "% (", perc$value, " mil R$)")), color = "black", size=4, hjust = -0.1) +
+  scale_fill_manual(values = c("darkred","darkgreen","RoyalBlue","orange"))+
+  labs(y = NULL, x = NULL, title = "Proportion of money")+
+  theme_bw()+
+  xlim(0, max(perc2$value + 20))+
+  theme(legend.position = "None")
+
+```
+
+## Money in material speculations
+```{r stuff, echo=FALSE}
+ggplot(df, aes(x=Date, y=Valued_stuff))+
+  geom_col(fill = "blue", alpha = 0.55)+
+  theme_bw()+
+  ggtitle("Valued Stuff")+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90))
+```
+
+## Gain and loss balance
+```{r Gainandloss, echo=FALSE, error = TRUE}
+#Gain and loss balance ====================================================================
+#Gain in relation of initial data of my balance
+strg = bank2
+strg$balance_str_date = strg$Value - strg$Value[1]
+
+strg2 = df
+strg2$balance_str_date = strg2$Total_Reais - strg2$Total_Reais[1]
+
+ggplot(strg, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date))))+
+  geom_col()+
+  theme_minimal()+
+  ggtitle("Gain in relation of initial money in bank")+
+  labs(y = "Difference in relation initial money (Reais)", x = NULL)+
+  geom_text(aes(label = round(balance_str_date, 0),
+                hjust = 0.5,
+                vjust = ifelse(balance_str_date < 0, 1.5, -1)), size = 2.5) +
+  ylim(min(strg$balance_str_date)-2000, max(strg$balance_str_date)+2000)+
+  scale_fill_manual(values=c("red","blue","darkgreen"))+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90), legend.position = "none")
+
+ggplot(strg2, aes(x=Date, y = balance_str_date, fill=factor(sign(balance_str_date))))+
+  geom_col()+
+  geom_line(aes(group = grp), size = 1, alpha = 0.7)+
+  geom_point(size = 1)+
+  theme_minimal()+
+  ggtitle("Gain in relation of initial money total")+
+  labs(y = "Difference in relation initial money (Reais)", x = NULL)+
+  geom_text(aes(label = round(balance_str_date, 0),
+                hjust = 0.6,
+                vjust = ifelse(balance_str_date < 0, 1.5, -1)), size = 2.5) +
+  ylim(min(strg2$balance_str_date)-2000, max(strg2$balance_str_date)+2000)+
+  scale_fill_manual(values=c("red","darkgreen"))+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90), legend.position = "none")
+
+
+#Gain in relation of previous month in bank money
+bank_bal = bank2
+bank_bal$bal = 0
+
+zet = length(bank_bal$bal)
+for (x in 1:zet) {
+  bank_bal$bal[x+1] = bank_bal$Value[x+1] - bank_bal$Value[x]
+  
+}
+
+ggplot(bank_bal, aes(x=Date, y = bal, fill=factor(sign(bal))))+
+  geom_col()+
+  theme_minimal()+
+  ggtitle("Monthly Gain and Loss Balance (Money in Bank)")+
+  labs(y = "Gain and Loss (Reais)", x = NULL)+
+  geom_text(aes(label = round(bal, 0),
+                hjust = 0.5,
+                vjust = ifelse(bal < 0, 1.5, -1)), size = 2.5) +
+  ylim(min(bank_bal$bal)-2000, max(bank_bal$bal)+2000)+
+  scale_fill_manual(values=c("red","blue","darkgreen"))+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90), legend.position = "none")
+
+#Gain in relation of previous month in total money
+strg2 = df
+strg2$balance_str_date = strg2$Total_Reais - strg2$Total_Reais[1]
+
+bank_bal2 = df
+bank_bal2$bal = 0
+
+zet = length(bank_bal2$bal)
+for (x in 1:zet) {
+  bank_bal2$bal[x+1] = bank_bal2$Total_Reais[x+1] - bank_bal2$Total_Reais[x]
+  
+}
+
+ggplot(bank_bal2, aes(x=Date, y = bal, fill=factor(sign(bal))))+
+  geom_col()+
+  theme_minimal()+
+  ggtitle("Monthly Gain and Loss Balance (Total Money)")+
+  labs(y = "Gain and Loss (Reais)", x = NULL)+
+  geom_text(aes(label = round(bal, 0),
+                hjust = 0.5,
+                vjust = ifelse(bal < 0, 1.5, -1)), size = 2.5) +
+  ylim(min(bank_bal2$bal)-2000, max(bank_bal2$bal)+2000)+
+  scale_fill_manual(values=c("red","blue","darkgreen"))+
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.text.x = element_text(angle = 90), legend.position = "none")
+```
