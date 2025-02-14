@@ -22,7 +22,7 @@ library(ggplot2)
 library(plotly)
 
 #df = read.csv(file.choose())
-df = read.csv("Money_balance.csv", sep = ",")
+df = read.csv("Money_balance.csv", sep = ";")
 df$grp = c("a")
 
 df$NU_Bank = as.numeric(df$NU_Bank)
