@@ -28,5 +28,5 @@ output: html_document
 #### More of me:
 
 ::: {.pull-center style="margin:2em" markdown="1"}
-[![Foo](curriculum.png)](https://eduardoqm.github.io/cv/CV_Eduardo%20Q%20Marques.pdf) [![Foo](rg.jpg)](https://www.researchgate.net/profile/Eduardo-Queiroz-Marques) [![Foo](github.jpg)](https://github.com/Eduardoqm) ![Foo](twitter.png){width="48"} [![Foo](rsolved.png)](https://eduardoqm.github.io/rsolved/home)
+[![Foo](curriculum.png)](https://eduardoqm.github.io/cv/CV_Eduardo%20Q%20Marques.pdf) [![Foo](rg.jpg)](https://www.researchgate.net/profile/Eduardo-Queiroz-Marques) [![Foo](github.jpg)](https://github.com/Eduardoqm) [![Foo](rsolved.png)](https://eduardoqm.github.io/rsolved/home)
 :::
