@@ -3,18 +3,19 @@ title:
 output: html_document
 ---
 
+```{=html}
 <style type="text/css">
 .main-container {
   max-width: 85% !important;
   margin: auto;
 }
 </style>
-
+```
 <br>
 
-<div class="pull-left" style="margin:2em" markdown="1">
-![](Eu.jpg) 
-</div>
+::: {.pull-left style="margin:2em" markdown="1"}
+![](Eu.jpg)
+:::
 
 ## Dr. Eduardo Q Marques
 
@@ -25,10 +26,7 @@ output: html_document
 <br>
 
 #### More of me:
-<div class="pull-center" style="margin:2em" markdown="1">
-[![Foo](curriculum.png)](https://eduardoqm.github.io/cv/CV_Eduardo Q Marques.pdf)
-[![Foo](rg.jpg)](https://www.researchgate.net/profile/Eduardo-Queiroz-Marques)
-[![Foo](github.jpg)](https://github.com/Eduardoqm)
-[![Foo](twitter.png)](https://twitter.com/EQMarques)
-[![Foo](rsolved.png)](https://eduardoqm.github.io/rsolved/home)
-</div>
+
+::: {.pull-center style="margin:2em" markdown="1"}
+[![Foo](curriculum.png)](https://eduardoqm.github.io/cv/CV_Eduardo%20Q%20Marques.pdf) [![Foo](rg.jpg)](https://www.researchgate.net/profile/Eduardo-Queiroz-Marques) [![Foo](github.jpg)](https://github.com/Eduardoqm) [![Foo](rsolved.png)](https://eduardoqm.github.io/rsolved/home)
+:::
