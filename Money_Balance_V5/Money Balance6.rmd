@@ -19,7 +19,6 @@ library(readxl)
 library(reshape2)
 library(tidyverse)
 library(scales)
-library(ggplot2)
 
 #df = read.csv(file.choose())
 df = readxl::read_excel("Money_balance.xlsx")
@@ -35,7 +34,8 @@ df$Date = as.Date(df$Date, "%m/%d/%Y")
 ```{r bank, echo=FALSE}
 
 ggplot(df, aes(x=Date, y = all))+
-  geom_line(aes(group = grp), size = 1)+
+  #geom_line(aes(group = grp), size = 1)+
+  geom_smooth(se = F)+
   geom_point(size = 2)+
   theme_bw()+
   labs(y = NULL, x = NULL, title = "Total assets")+
@@ -43,14 +43,14 @@ ggplot(df, aes(x=Date, y = all))+
            y=max(df$all)+3000,
            label= round(df$all[length(df$all)], 0),
            color = "darkgreen", size = 5)+
-  theme(plot.title = element_text(hjust = 0.5), 
-        axis.text.x = element_text(angle = 90),
+  theme(plot.title = element_text(hjust = 0.5),
         legend.position = "none")
 
 
 
 ggplot(df, aes(x=Date, y = bank))+
-  geom_line(aes(group = grp), size = 1)+
+  #geom_line(aes(group = grp), size = 1)+
+  geom_smooth(se = F)+
   geom_point(size = 2)+
   theme_minimal()+
   labs(y = NULL, x = NULL, title ="Total Money in bank")+
@@ -59,9 +59,36 @@ ggplot(df, aes(x=Date, y = bank))+
            label= round(df$bank[length(df$bank)], 0),
            color = "darkblue", size = 5)+
   ylim(min(df$bank), max(df$bank)+2000)+
-  theme(plot.title = element_text(hjust = 0.5), 
-        axis.text.x = element_text(angle = 90),
+  theme(plot.title = element_text(hjust = 0.5),
         legend.position = "none")
+```
+
+## Gain in relation of previous month in total money
+```{r Gainandloss, echo=FALSE, error=T}
+strg2 = df
+strg2$balance_str_date = strg2$all - strg2$all[1]
+
+bank_bal2 = df
+bank_bal2$bal = 0
+
+zet = length(bank_bal2$bal)
+for (x in 1:zet) {
+  bank_bal2$bal[x+1] = bank_bal2$all[x+1] - bank_bal2$all[x]
+  
+}
+
+ggplot(bank_bal2, aes(x=Date, y = bal, fill=factor(sign(bal))))+
+  geom_col()+
+  theme_minimal()+
+  ggtitle("Monthly Gain and Loss Balance (Total Money)")+
+  labs(y = "Gain and Loss (Reais)", x = NULL)+
+   geom_text(data = bank_bal2[nrow(bank_bal2), ],
+    aes(label = round(bal, 0),
+      hjust = 0.5,
+      vjust = ifelse(bal < 0, 1.5, -1)), size = 5)+
+  ylim(min(bank_bal2$bal)-2000, max(bank_bal2$bal)+2000)+
+  scale_fill_manual(values=c("red","blue","darkgreen"))+
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
 ```
 
 ## Total Money in bank and other goods with values
@@ -92,7 +119,6 @@ ggplot(perc2, aes(x=value, y=variable, fill = variable))+
   theme_bw()+
   xlim(0, max(perc2$value + 20))+
   theme(legend.position = "None")
-
 ```
 
 ## Money in material speculations
@@ -101,8 +127,7 @@ ggplot(df, aes(x=Date, y=Valued_stuff))+
   geom_area(fill = "blue", alpha = 0.55)+
   theme_bw()+
   labs(x = NULL, y = "Reais")+
-  theme(plot.title = element_text(hjust = 0.5), 
-        axis.text.x = element_text(angle = 90))
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ## Salary
@@ -111,6 +136,6 @@ ggplot(df, aes(x=Date, y=Salary))+
   geom_area(fill = "darkgreen", alpha = 0.55)+
   theme_bw()+
   labs(x = NULL, y = "Reais")+
-  theme(plot.title = element_text(hjust = 0.5), 
-        axis.text.x = element_text(angle = 90))
+  theme(plot.title = element_text(hjust = 0.5))
 ```
+
